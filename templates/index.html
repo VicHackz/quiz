@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="sv">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Kräftskiva Quiz - Spela</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Comfortaa:wght@400;700&display=swap');
+body {
+  margin: 0; height: 100vh; font-family: 'Comfortaa', cursive;
+  background: radial-gradient(circle at center, #ff4d00, #b22200);
+  display: flex; flex-direction: column; align-items: center;
+  background-image:
+    radial-gradient(rgba(255,255,255,0.1) 5%, transparent 6%),
+    radial-gradient(rgba(255,255,255,0.1) 5%, transparent 6%),
+    url('https://images.unsplash.com/photo-1506744038136-46273834b3fb?auto=format&fit=crop&w=1050&q=80');
+  background-size: 50px 50px, 50px 50px, cover;
+}
+.topbar { width: 100%; padding: 12px; text-align: center; background: rgba(255,87,34,0.85); font-weight: 700; }
+main { flex: 1; display: flex; flex-direction: column; justify-content: center; align-items: center; }
+#status { font-size: 2.4rem; margin-bottom: 40px; background: rgba(231,76,60,0.85); padding: 15px 20px; border-radius: 15px; }
+#buzz { width: 200px; height: 200px; border-radius: 50%; font-size: 2rem; font-weight: 700; background: #e74c3c; border: none; color: white; box-shadow: 0 15px 0 #c0392b; cursor: pointer;}
+#buzz:active { box-shadow: 0 8px 0 #c0392b; transform: translateY(7px); }
+#buzz[disabled] { background: #a34944; box-shadow: none; cursor: default; }
+</style>
+</head>
+<body>
+<div class="topbar">Inloggad som: <strong>{{ team }}</strong></div>
+<main>
+  <h1 id="status">Ingen har tryckt ännu</h1>
+  <button id="buzz">Tryck!</button>
+  <img id="quiz-image" src="/bild.jpeg" style="display:none; max-width:150px; margin:20px auto; border-radius:12px;">
+</main>
+<script src="//cdnjs.cloudflare.com/ajax/libs/socket.io/4.5.4/socket.io.min.js"></script>
+<script>
+const socket = io();
+const teamName = "{{ team }}";
+const statusEl = document.getElementById("status");
+const buzzBtn = document.getElementById("buzz");
+const quizImage = document.getElementById("quiz-image");
+
+buzzBtn.addEventListener("click", () => {
+  socket.emit("buzz", teamName);
+});
+socket.on("buzzed", (team) => {
+  statusEl.innerText = `${team} var först!`;
+  buzzBtn.disabled = true;
+});
+socket.on("reset", () => {
+  statusEl.innerText = "Ingen har tryckt ännu";
+  buzzBtn.disabled = false;
+});
+socket.on("show_image_to_teams", () => {
+  quizImage.style.display = "block";
+});
+</script>
+</body>
+</html>

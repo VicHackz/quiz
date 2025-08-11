@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="sv">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Logga in - Kräftskiva Quiz</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Josefin+Sans:wght@400;700&display=swap');
+body {
+  margin: 0; height: 100vh; font-family: 'Josefin Sans', sans-serif;
+  background: radial-gradient(circle at center, #ff4d00, #b22200);
+  display: flex; justify-content: center; align-items: center;
+  background-image: url('https://images.unsplash.com/photo-1506744038136-46273834b3fb?auto=format&fit=crop&w=1050&q=80');
+  background-position: center; background-size: cover;
+}
+.login-container {
+  background: rgba(255,87,34,0.9); padding: 40px 50px; border-radius: 20px;
+  width: 320px; text-align: center; box-shadow: 0 10px 30px rgba(255,69,0,0.6);
+  border: 3px solid #ff6f3c; backdrop-filter: blur(8px);
+}
+h1 { font-size: 2.5rem; margin-bottom: 25px; }
+.input-group { margin-bottom: 20px; text-align: left; }
+label { font-weight: 700; margin-bottom: 6px; display: block; }
+input { width: 100%; padding: 12px 15px; border-radius: 12px; border: none; }
+button {
+  width: 100%; padding: 14px; background: linear-gradient(135deg,#e64a19,#bf360c);
+  border: none; border-radius: 15px; font-size: 1.4rem; font-weight: 800; color: white; cursor: pointer;
+}
+button:hover { background: linear-gradient(135deg,#ff5722,#d84315); }
+.error { background: #ff2200; padding: 12px; border-radius: 12px; margin-bottom: 20px; }
+</style>
+</head>
+<body>
+<div class="login-container">
+  <h1>Kräftskiva Quiz</h1>
+  {% if error %}<div class="error">{{ error }}</div>{% endif %}
+  <form method="post" autocomplete="off" novalidate>
+    <div class="input-group">
+      <label for="username">Användarnamn</label>
+      <input type="text" id="username" name="username" required />
+    </div>
+    <div class="input-group">
+      <label for="password">Lösenord</label>
+      <input type="password" id="password" name="password" required />
+    </div>
+    <button type="submit">Logga in</button>
+  </form>
+</div>
+</body>
+</html>

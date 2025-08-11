@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="sv">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Admin - Kräftskiva Quiz</title>
+<style>
+body { font-family: 'Comfortaa', cursive; background: radial-gradient(circle at center, #ff4d00, #b22200); color: #fff4e6; padding: 20px; }
+h1 { text-align: center; }
+.info { background: rgba(255,87,34,.9); padding: 20px; border-radius: 12px; margin: 20px auto; max-width: 400px; }
+button { display: block; margin: 30px auto; padding: 15px 40px; font-size: 1.2rem; font-weight: 700; color: white; background: #e74c3c; border: none; border-radius: 15px; cursor: pointer; }
+</style>
+</head>
+<body>
+<h1>Adminpanel - Kräftskiva Quiz</h1>
+
+<div class="info">
+  <h2>Lag som svarade först:</h2>
+  <p id="first-team">{{ first_team if first_team else "Ingen har tryckt än" }}</p>
+</div>
+
+<button id="reset-btn">Återställ</button>
+<button id="show-image-btn">Visa bild</button>
+
+<script src="//cdnjs.cloudflare.com/ajax/libs/socket.io/4.5.4/socket.io.min.js"></script>
+<script>
+const socket = io();
+const firstTeamEl = document.getElementById("first-team");
+const resetBtn = document.getElementById("reset-btn");
+const showImageBtn = document.getElementById("show-image-btn");
+
+resetBtn.addEventListener("click", () => {
+  socket.emit("reset");
+});
+
+showImageBtn.addEventListener("click", () => {
+  socket.emit("show_image");
+});
+
+socket.on("buzzed", (team) => {
+  firstTeamEl.textContent = team;
+});
+
+socket.on("reset", () => {
+  firstTeamEl.textContent = "Ingen har tryckt än";
+});
+</script>
+</body>
+</html>
